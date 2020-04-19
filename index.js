@@ -1,4 +1,4 @@
-import core from '@actions/core';
+const core = require('@actions/core');
 
 try {
     const token = core.getInput('APPETIZE_TOKEN');
@@ -16,6 +16,8 @@ try {
             url: fileUrl,
             platform: platform
         })
+    }).then(response => {
+        // core.setOutput("time", time);
     }).catch(error => {
         core.setFailed(error.message);
     });
