@@ -1,0 +1,25 @@
+name: 'Upload apps to appetize'
+description: 'Upload apps to appetize'
+branding:
+  color: 'yellow'
+  icon: 'code'
+inputs:
+  APPETIZE_TOKEN:
+    description: 'API token for appetize'
+    required: true
+  PUBLICKEY:
+    description: 'App public key'
+    required: true
+  FILE_URL:
+    description: 'App file url'
+    required: true
+  PLATFORM:
+    description: 'App platform (ios or android)'
+    required: true
+    default: 'android'
+outputs:
+  time:
+    description: 'The time we greeted you'
+runs:
+  using: 'node12'
+  main: 'index.js'
