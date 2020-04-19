@@ -2,11 +2,18 @@
     "name": "github-action-appetize",
     "description": "Upload app to appetize",
     "version": "1.0.0",
-    "main": "index.js",
+    "main": "dist/index.js",
     "license": "MIT",
     "repository": "https://github.com/JongtaekChoi/github-action-appetize",
     "author": "Jongtaek Choi <lastchoice86@naver.com>",
+    "scripts": {
+        "build": "tsc --allowJs index.js --outDir ./dist"
+    },
     "dependencies": {
         "@actions/core": "^1.2.3"
+    },
+    "devDependencies": {
+        "webpack": "^4.42.1",
+        "webpack-cli": "^3.3.11"
     }
 }
