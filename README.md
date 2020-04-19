@@ -15,10 +15,11 @@ This action upload built app to Appetize.io.
 **Required** Platform of the app (ios or android).
 
 ## Example usage
+For security, It is strongly recommended to use secrets for Appetize api token.
 ```
 uses: JongtaekChoi/github-action-appetize@master
 with:
-    APPETIZE_TOKEN: "appetize_api_token"
+    APPETIZE_TOKEN: ${{ secrets.APPETIZE_TOKEN }} 
     PUBLICKEY: "public_key"
     FILE_URL: https://s3.amazonaws.com/mybucket/app.apk
     PLATFORM: "android"
