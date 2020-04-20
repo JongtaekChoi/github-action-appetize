@@ -20,7 +20,9 @@ try {
                 platform: platform
             })
         }).then(response => {
-            if (response.status !== 200) {
+            if (response.status == 200) {
+                console.log('Success')
+            } else {
                 throw new Error(`RequestError (${response.status}) : ${response.statusText}`);
             }
         }).catch(error => {
