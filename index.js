@@ -7,12 +7,13 @@ try {
     const fileUrl = core.getInput('FILE_URL');
     const platform = core.getInput('PLATFORM');
     fetch(
-        `https://${token}@api.appetize.io/v1/apps/${publickKey}`,
+        `https://api.appetize.io/v1/apps/${publickKey}`,
         {
             method: 'POST',
             headers: {
                 contentType: 'application/json',
                 Accept: 'application/json, text/plain, */*',
+                Authorization: 'Basic ' + Buffer.from(`${token}:`).toString('base64')
             },
             body: JSON.stringify({
                 url: fileUrl,
