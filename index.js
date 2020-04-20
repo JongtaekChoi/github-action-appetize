@@ -19,7 +19,9 @@ try {
                 platform: platform
             })
         }).then(response => {
-            // core.setOutput("time", time);
+            if (response.status !== 200) {
+                throw new Error(`RequestError (${response.status}) : ${response.statusText}`);
+            }
         }).catch(error => {
             core.setFailed(error.message);
         });
