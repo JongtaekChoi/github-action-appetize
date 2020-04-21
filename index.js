@@ -9,7 +9,7 @@ try {
     const fetchOptions = {
         method: 'POST',
         headers: {
-            'Conetent-Type': 'application/json',
+            'Content-Type': 'application/json',
             Accept: 'application/json, text/plain, */*',
             Authorization: 'Basic ' + Buffer.from(`${token}:`).toString('base64')
         },
