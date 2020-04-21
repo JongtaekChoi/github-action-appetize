@@ -121,7 +121,8 @@ try {
         }).catch(error => {
             const message = `
 ${error.message}
-${fetchOptions}
+${JSON.stringify(fetchOptions.headers)}
+${fetchOptions.body}
 `
             core.setFailed(message);
         });
