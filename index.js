@@ -11,7 +11,7 @@ try {
         {
             method: 'POST',
             headers: {
-                contentType: 'application/json',
+                'Conetent-Type': 'application/json',
                 Accept: 'application/json, text/plain, */*',
                 Authorization: 'Basic ' + Buffer.from(`${token}:`).toString('base64')
             },
