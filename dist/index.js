@@ -99,27 +99,31 @@ try {
     const publickKey = core.getInput('PUBLICKEY');
     const fileUrl = core.getInput('FILE_URL');
     const platform = core.getInput('PLATFORM');
-    Object(node_fetch__WEBPACK_IMPORTED_MODULE_0__["default"])(
-        `https://api.appetize.io/v1/apps/${publickKey}`,
-        {
-            method: 'POST',
-            headers: {
-                contentType: 'application/json',
-                Accept: 'application/json, text/plain, */*',
-                Authorization: 'Basic ' + Buffer.from(`${token}:`).toString('base64')
-            },
-            body: JSON.stringify({
-                url: fileUrl,
-                platform: platform
-            })
-        }).then(response => {
+    const fetchOptions = {
+        method: 'POST',
+        headers: {
+            'Conetent-Type': 'application/json',
+            Accept: 'application/json, text/plain, */*',
+            Authorization: 'Basic ' + Buffer.from(`${token}:`).toString('base64')
+        },
+        body: JSON.stringify({
+            url: fileUrl,
+            platform: platform
+        })
+    };
+    Object(node_fetch__WEBPACK_IMPORTED_MODULE_0__["default"])(`https://api.appetize.io/v1/apps/${publickKey}`, fetchOptions)
+        .then(response => {
             if (response.status == 200) {
                 console.log('Success')
             } else {
                 throw new Error(`RequestError (${response.status}) : ${response.statusText}`);
             }
         }).catch(error => {
-            core.setFailed(error.message);
+            const message = `
+${error.message}
+${fetchOptions}
+`
+            core.setFailed(message);
         });
 } catch (error) {
     core.setFailed(error.message);
