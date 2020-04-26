@@ -1,6 +1,6 @@
 # Upload app to Appetize action
 
-This action upload built app to Appetize.io.
+This action upload an built app to Appetize.io. 
 
 ## Inputs
 
@@ -8,7 +8,7 @@ This action upload built app to Appetize.io.
 
 **Required** Appetize api token.
 ### `PUBLICKEY`
-**Required** App public key. You can get this value at response of upload first file.
+**Optional** App public key. If it's empty, a new app will be created.
 ### `FILE_URL`
 **Required** Url of the built app.
 ### `PLATFORM`

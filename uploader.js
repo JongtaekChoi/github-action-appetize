@@ -25,7 +25,7 @@ exports.uploadToAppetize = (input) => {
         console.log('Success')
         response.text()
           .then(jsonResult => JSON.parse(jsonResult))
-          .then(result => core.setOutput(result.publicKey))
+          .then(result => core.setOutput('appetize_public_key', result.publicKey))
           .catch(error => {
             console.error('response parsing error: ' + error.message);
           });
