@@ -8,8 +8,9 @@ inputs:
     description: 'API token for appetize'
     required: true
   PUBLICKEY:
-    description: 'App public key'
-    required: true
+    description: 'App public key for update.'
+    required: false
+    default: ''
   FILE_URL:
     description: 'App file url'
     required: true
@@ -18,8 +19,8 @@ inputs:
     required: true
     default: 'android'
 outputs:
-  time:
-    description: 'The time we greeted you'
+  PUBLICKEY:
+    description: 'App public key.'
 runs:
   using: 'node12'
   main: 'dist/index.js'

@@ -90,45 +90,26 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var node_fetch__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
+/* harmony import */ var _uploader__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
+/* harmony import */ var _uploader__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_uploader__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "uploadToAppetize", function() { return _uploader__WEBPACK_IMPORTED_MODULE_0___default.a; });
 const core = __webpack_require__(1);
 
 
-try {
+if (!global.__TEST__) {
+  try {
     const token = core.getInput('APPETIZE_TOKEN');
     const publickKey = core.getInput('PUBLICKEY');
     const fileUrl = core.getInput('FILE_URL');
     const platform = core.getInput('PLATFORM');
-    const fetchOptions = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json, text/plain, */*',
-            Authorization: 'Basic ' + Buffer.from(`${token}:`).toString('base64')
-        },
-        body: JSON.stringify({
-            url: fileUrl,
-            platform: platform
-        })
-    };
-    Object(node_fetch__WEBPACK_IMPORTED_MODULE_0__["default"])(`https://api.appetize.io/v1/apps/${publickKey}`, fetchOptions)
-        .then(response => {
-            if (response.status == 200) {
-                console.log('Success')
-            } else {
-                throw new Error(`RequestError (${response.status}) : ${response.statusText}`);
-            }
-        }).catch(error => {
-            const message = `
-${error.message}
-${JSON.stringify(fetchOptions.headers)}
-${fetchOptions.body}
-`
-            core.setFailed(message);
-        });
-} catch (error) {
+    _uploader__WEBPACK_IMPORTED_MODULE_0___default()({ token, publickKey, fileUrl, platform });
+  } catch (error) {
     core.setFailed(error.message);
+  }
 }
+
+
+
 
 /***/ }),
 /* 1 */
@@ -443,6 +424,57 @@ module.exports = require("path");
 
 /***/ }),
 /* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const core = __webpack_require__(1);
+const fetch = __webpack_require__(6);
+
+const baseUrl = 'https://api.appetize.io/v1/apps'
+
+exports.uploadToAppetize = (input) => {
+  const { token, publicKey, fileUrl, platform } = input;
+  const fetchOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json, text/plain, */*',
+      Authorization: 'Basic ' + Buffer.from(`${token}:`).toString('base64')
+    },
+    body: JSON.stringify({
+      url: fileUrl,
+      platform: platform
+    })
+  };
+  const postfix = (publicKey && publicKey.length > 0) ? `/${publicKey}` : ``;
+  const url = `${baseUrl}${postfix}`;
+  fetch(url, fetchOptions)
+    .then(response => {
+      if (response.status == 200) {
+        console.log('Success')
+        response.text()
+          .then(jsonResult => JSON.parse(jsonResult))
+          .then(result => core.setOutput(result.publicKey))
+          .catch(error => {
+            console.error('response parsing error: ' + error.message);
+          });
+      } else {
+        response.text().then(text => console.error({ 'error': text }));
+        throw new Error(`RequestError (${response.status}) : ${response.statusText}`);
+      }
+    }).catch(error => {
+      const message = `
+${error.message}
+${JSON.stringify(fetchOptions.headers)}
+${fetchOptions.body}
+`
+      console.error(message);
+      core.setFailed(message);
+    });
+};
+
+
+/***/ }),
+/* 6 */
 /***/ (function(__webpack_module__, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -451,11 +483,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Request", function() { return Request; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Response", function() { return Response; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FetchError", function() { return FetchError; });
-/* harmony import */ var stream__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6);
-/* harmony import */ var http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7);
-/* harmony import */ var url__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(8);
-/* harmony import */ var https__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(9);
-/* harmony import */ var zlib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(10);
+/* harmony import */ var stream__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7);
+/* harmony import */ var http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8);
+/* harmony import */ var url__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(9);
+/* harmony import */ var https__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(10);
+/* harmony import */ var zlib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(11);
 
 
 
@@ -2090,31 +2122,31 @@ fetch.Promise = global.Promise;
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports) {
 
 module.exports = require("stream");
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports) {
 
 module.exports = require("http");
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports) {
 
 module.exports = require("url");
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports) {
 
 module.exports = require("https");
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports) {
 
 module.exports = require("zlib");
