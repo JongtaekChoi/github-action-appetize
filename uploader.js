@@ -1,5 +1,5 @@
 const core = require('@actions/core');
-const fetch = require('node-fetch');
+import fetch from 'node-fetch';
 
 const baseUrl = 'https://api.appetize.io/v1/apps'
 

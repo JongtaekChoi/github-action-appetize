@@ -418,10 +418,13 @@ module.exports = require("path");
 
 /***/ }),
 /* 5 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var node_fetch__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6);
 const core = __webpack_require__(1);
-const fetch = __webpack_require__(6);
+
 
 const baseUrl = 'https://api.appetize.io/v1/apps'
 
@@ -441,7 +444,7 @@ exports.uploadToAppetize = (input) => {
   };
   const postfix = (publicKey && publicKey.length > 0) ? `/${publicKey}` : ``;
   const url = `${baseUrl}${postfix}`;
-  fetch(url, fetchOptions)
+  Object(node_fetch__WEBPACK_IMPORTED_MODULE_0__["default"])(url, fetchOptions)
     .then(response => {
       if (response.status == 200) {
         console.log('Success')
