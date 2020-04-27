@@ -86,15 +86,10 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _uploader__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
-/* harmony import */ var _uploader__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_uploader__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "uploadToAppetize", function() { return _uploader__WEBPACK_IMPORTED_MODULE_0___default.a; });
 const core = __webpack_require__(1);
-
+const uploader = __webpack_require__(5);
 
 if (!global.__TEST__) {
   try {
@@ -102,12 +97,11 @@ if (!global.__TEST__) {
     const publickKey = core.getInput('PUBLICKEY');
     const fileUrl = core.getInput('FILE_URL');
     const platform = core.getInput('PLATFORM');
-    _uploader__WEBPACK_IMPORTED_MODULE_0___default()({ token, publickKey, fileUrl, platform });
+    uploader.uploadToAppetize({ token, publickKey, fileUrl, platform });
   } catch (error) {
     core.setFailed(error.message);
   }
 }
-
 
 
 
