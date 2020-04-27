@@ -4,15 +4,13 @@ This action upload an built app to Appetize.io.
 
 ## Inputs
 
-### `APPETIZE_TOKEN`
+| key           | description                | required |
+| ------------- | -------------------------- | -----    |
+| APPETIZE_TOKEN| Appetize api token.        | o        |
+| PUBLICKEY | App public key. If it's empty, a new app will be created. | x |
+| FILE_URL | Url of the built app.           | o |
+| APPETIZE_TOKEN| Platform of the app (ios or android). | o |
 
-**Required** Appetize api token.
-### `PUBLICKEY`
-**Optional** App public key. If it's empty, a new app will be created.
-### `FILE_URL`
-**Required** Url of the built app.
-### `PLATFORM`
-**Required** Platform of the app (ios or android).
 
 ## Example usage
 For security, It is strongly recommended to use secrets for Appetize api token.
@@ -26,6 +24,10 @@ with:
     PLATFORM: "android"
 ```
 ## Output
-### `appetize_public_key`
-If the request success, the public key of the uploaded app will be set to the value of the key `appetize_public_key` of the steps output.
+
+
+| key           | description                | 
+| ------------- | -------------------------- | 
+| appetize_public_key| The public key of the uploaded app.    |
+
 
