@@ -86,21 +86,65 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var node_fetch__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
 const core = __webpack_require__(1);
-const uploader = __webpack_require__(5);
 
-if (!global.__TEST__) {
-  try {
-    const token = core.getInput('APPETIZE_TOKEN');
-    const publickKey = core.getInput('PUBLICKEY');
-    const fileUrl = core.getInput('FILE_URL');
-    const platform = core.getInput('PLATFORM');
-    uploader.uploadToAppetize({ token, publickKey, fileUrl, platform });
-  } catch (error) {
-    core.setFailed(error.message);
-  }
+
+const baseUrl = 'https://api.appetize.io/v1/apps'
+
+const uploadToAppetize = (input) => {
+  const { token, publicKey, fileUrl, platform } = input;
+  const fetchOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json, text/plain, */*',
+      Authorization: 'Basic ' + Buffer.from(`${token}:`).toString('base64')
+    },
+    body: JSON.stringify({
+      url: fileUrl,
+      platform: platform
+    })
+  };
+  const postfix = (publicKey && publicKey.length > 0) ? `/${publicKey}` : ``;
+  const url = `${baseUrl}${postfix}`;
+  Object(node_fetch__WEBPACK_IMPORTED_MODULE_0__["default"])(url, fetchOptions)
+    .then(response => {
+      if (response.status == 200) {
+        console.log('Success')
+        response.text()
+          .then(jsonResult => JSON.parse(jsonResult))
+          .then(result => core.setOutput('appetize_public_key', result.publicKey))
+          .catch(error => {
+            console.error('response parsing error: ' + error.message);
+          });
+      } else {
+        response.text().then(text => console.error({ 'error': text }));
+        throw new Error(`RequestError (${response.status}) : ${response.statusText}`);
+      }
+    }).catch(error => {
+      const message = `
+${error.message}
+${JSON.stringify(fetchOptions.headers)}
+${fetchOptions.body}
+`
+      console.error(message);
+      core.setFailed(message);
+    });
+};
+
+try {
+  const token = core.getInput('APPETIZE_TOKEN');
+  const publickKey = core.getInput('PUBLICKEY');
+  const fileUrl = core.getInput('FILE_URL');
+  const platform = core.getInput('PLATFORM');
+  uploadToAppetize({ token, publickKey, fileUrl, platform });
+} catch (error) {
+  core.setFailed(error.message);
 }
 
 
@@ -418,60 +462,6 @@ module.exports = require("path");
 
 /***/ }),
 /* 5 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var node_fetch__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6);
-const core = __webpack_require__(1);
-
-
-const baseUrl = 'https://api.appetize.io/v1/apps'
-
-exports.uploadToAppetize = (input) => {
-  const { token, publicKey, fileUrl, platform } = input;
-  const fetchOptions = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json, text/plain, */*',
-      Authorization: 'Basic ' + Buffer.from(`${token}:`).toString('base64')
-    },
-    body: JSON.stringify({
-      url: fileUrl,
-      platform: platform
-    })
-  };
-  const postfix = (publicKey && publicKey.length > 0) ? `/${publicKey}` : ``;
-  const url = `${baseUrl}${postfix}`;
-  Object(node_fetch__WEBPACK_IMPORTED_MODULE_0__["default"])(url, fetchOptions)
-    .then(response => {
-      if (response.status == 200) {
-        console.log('Success')
-        response.text()
-          .then(jsonResult => JSON.parse(jsonResult))
-          .then(result => core.setOutput('appetize_public_key', result.publicKey))
-          .catch(error => {
-            console.error('response parsing error: ' + error.message);
-          });
-      } else {
-        response.text().then(text => console.error({ 'error': text }));
-        throw new Error(`RequestError (${response.status}) : ${response.statusText}`);
-      }
-    }).catch(error => {
-      const message = `
-${error.message}
-${JSON.stringify(fetchOptions.headers)}
-${fetchOptions.body}
-`
-      console.error(message);
-      core.setFailed(message);
-    });
-};
-
-
-/***/ }),
-/* 6 */
 /***/ (function(__webpack_module__, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -480,11 +470,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Request", function() { return Request; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Response", function() { return Response; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FetchError", function() { return FetchError; });
-/* harmony import */ var stream__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7);
-/* harmony import */ var http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8);
-/* harmony import */ var url__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(9);
-/* harmony import */ var https__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(10);
-/* harmony import */ var zlib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(11);
+/* harmony import */ var stream__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6);
+/* harmony import */ var http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7);
+/* harmony import */ var url__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(8);
+/* harmony import */ var https__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(9);
+/* harmony import */ var zlib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(10);
 
 
 
@@ -2119,31 +2109,31 @@ fetch.Promise = global.Promise;
 
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports) {
 
 module.exports = require("stream");
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports) {
 
 module.exports = require("http");
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports) {
 
 module.exports = require("url");
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports) {
 
 module.exports = require("https");
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports) {
 
 module.exports = require("zlib");
